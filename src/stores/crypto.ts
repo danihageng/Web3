@@ -21,7 +21,28 @@ export const useCryptoStore = defineStore('user', () => {
         const count = (await wavePortalContract.getBalance())
         const amt = ethers.utils.formatEther(count)
         console.log('count', amt)
+        localStorage.setItem('balance', amt)
         setLoader(false)
+      }
+    }
+    catch (e) {
+      setLoader(false)
+      console.log('e', e)
+    }
+  }
+
+  async function getPriceCoin() {
+    setLoader(true)
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd')
+        // https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false
+        const data = await res.json()
+        localStorage.setItem('PriceMatic', JSON.stringify(data['matic-network'].usd))
+        console.log('Price coin:', data['matic-network'])
+        setLoader(false)
+        return data
       }
     }
     catch (e) {
@@ -165,6 +186,7 @@ export const useCryptoStore = defineStore('user', () => {
       await getWaveCount()
       await getAllWaves()
       await getBalance()
+      await getPriceCoin()
     }
     catch (error) {
       console.log(error)
@@ -181,6 +203,7 @@ export const useCryptoStore = defineStore('user', () => {
     loading,
     wave,
     connectWallet,
+    getPriceCoin,
     account,
     guestPosts,
     guestPostsCount,
