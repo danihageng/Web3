@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CoinList: typeof import('./components/CoinList.vue')['default']
     Loader: typeof import('./components/Loader.vue')['default']
     README: typeof import('./components/README.md')['default']
   }

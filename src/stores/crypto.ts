@@ -9,6 +9,8 @@ export const useCryptoStore = defineStore('user', () => {
   const guestPosts = ref([] as any)
   const loading = ref(false)
   const guestPostsCount = ref(0)
+  const priceMatic = ref(null)
+  const totalBalance = ref(null)
 
   async function getBalance() {
     setLoader(true)
@@ -22,6 +24,7 @@ export const useCryptoStore = defineStore('user', () => {
         const amt = ethers.utils.formatEther(count)
         console.log('count', amt)
         localStorage.setItem('balance', amt)
+        totalBalance.value = JSON.parse(amt)
         setLoader(false)
       }
     }
@@ -40,6 +43,7 @@ export const useCryptoStore = defineStore('user', () => {
         // https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false
         const data = await res.json()
         localStorage.setItem('PriceMatic', JSON.stringify(data['matic-network'].usd))
+        priceMatic.value = data['matic-network'].usd
         console.log('Price coin:', data['matic-network'])
         setLoader(false)
         return data
@@ -181,7 +185,7 @@ export const useCryptoStore = defineStore('user', () => {
       }
       const myAccounts = await ethereum.request({ method: 'eth_requestAccounts' })
 
-      console.log('Connected: ', myAccounts[0])
+      console.log('Connected: ', myAccounts)
       account.value = myAccounts[0]
       await getWaveCount()
       await getAllWaves()
@@ -204,6 +208,8 @@ export const useCryptoStore = defineStore('user', () => {
     wave,
     connectWallet,
     getPriceCoin,
+    priceMatic,
+    totalBalance,
     account,
     guestPosts,
     guestPostsCount,
