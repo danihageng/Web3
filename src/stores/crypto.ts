@@ -176,6 +176,31 @@ export const useCryptoStore = defineStore('user', () => {
     loading.value = value
   }
 
+  async function withdraw() {
+    try {
+      setLoader(true)
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const wavePortalContract = new ethers.Contract(contractAddress, contractABI.abi, signer)
+
+        const balanceWithdraw = await wavePortalContract.withdraw()
+        console.log('Balance withdrawn', balanceWithdraw.toNumber())
+        setLoader(false)
+        await getBalance()
+        await getWaveCount()
+        await getAllWaves()
+      }
+      else {
+        console.log('Ethereum object doesn\'t exist!')
+      }
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
     setLoader,
     loading,
@@ -184,6 +209,7 @@ export const useCryptoStore = defineStore('user', () => {
     account,
     guestPosts,
     guestPostsCount,
+    withdraw,
   }
 })
 

@@ -5,7 +5,7 @@ import { useCryptoStore } from '~/stores/crypto'
 
 const messageInput = ref(null as any)
 const cryptoStore = useCryptoStore()
-const { wave, connectWallet } = useCryptoStore()
+const { wave, connectWallet, withdraw } = useCryptoStore()
 const { account, guestPosts, guestPostsCount } = storeToRefs(cryptoStore)
 
 </script>
@@ -13,10 +13,10 @@ const { account, guestPosts, guestPostsCount } = storeToRefs(cryptoStore)
 <template>
   <div class="flex flex-col items-center">
     <h1 class="text-2xl m-4">
-      Daniel Crypto Guest Book
+      Crypto Guest Book
     </h1>
-    <button v-if="!account" class="bg-green-300 rounded p-4" @click="connectWallet">
-      Connect web3 to cripto Wallet
+    <button v-if="!account" class="background rounded p-4" @click="connectWallet">
+      Connect Wallet
     </button>
     <div v-if="account" class="mt-5">
       <input
@@ -27,6 +27,9 @@ const { account, guestPosts, guestPostsCount } = storeToRefs(cryptoStore)
       >
       <button class="bg-yellow-300 rounded p-4 mt-10" @click="wave(messageInput)">
         Send
+      </button>
+      <button class="bg-yellow-300 rounded p-4 mt-10" @click="withdraw">
+        withdraw
       </button>
     </div>
 
@@ -48,3 +51,10 @@ const { account, guestPosts, guestPostsCount } = storeToRefs(cryptoStore)
 meta:
   layout: home
 </route>
+
+<style lang="css" scoped>
+.background {
+  background: linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%);
+  color:white;
+}
+</style>

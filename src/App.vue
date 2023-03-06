@@ -7,9 +7,9 @@ const props = useCryptoStore()
 // you can use this to manipulate the document head in any components,
 // they will be rendered correctly in the html results with vite-ssg
 useHead({
-  title: 'Daniel Crypto Project',
+  title: 'Project web3 Dapp',
   meta: [
-    { name: 'description', content: 'Daniel Crypto Project' },
+    { name: 'description', content: 'web3 Dapp' },
   ],
 })
 
