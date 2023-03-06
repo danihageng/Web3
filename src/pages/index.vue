@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useCryptoStore } from '~/stores/crypto'
 const messageInput = ref(null as any)
 const cryptoStore = useCryptoStore()
-const { wave, connectWallet } = useCryptoStore()
+const { wave, connectWallet, withdraw } = useCryptoStore()
 const { account, guestPosts, guestPostsCount, priceMatic, totalBalance } = storeToRefs(cryptoStore)
 </script>
 
@@ -35,6 +35,9 @@ const { account, guestPosts, guestPostsCount, priceMatic, totalBalance } = store
       <button class="bg-yellow-300 rounded-100 p-4 mt-10" @click="wave(messageInput)">
         Send
       </button>
+      <!-- <button v-if="totalBalance !== 0" class="bg-yellow-300 rounded p-4 mt-10" @click="withdraw">
+        withdraw
+      </button> -->
     </div>
 
     <div v-if="account" class="border shadow rounded-100 bg-blue-800 w-8/12 p-4 mt-10 text-white">
@@ -43,6 +46,9 @@ const { account, guestPosts, guestPostsCount, priceMatic, totalBalance } = store
       </h3>
       <h3 v-if="totalBalance !== 0" class="text-2xl">
         Total amount inverted: {{ totalBalance }} MATIC = {{ totalBalance * priceMatic }} <i class="fas fa-dollar-sign" />
+      </h3>
+      <h3 v-if="totalBalance == 0" class="text-2xl">
+        Total amount inverted: {{ totalBalance }} MATIC
       </h3>
       <!-- <h3 class="text-2xl">
         Data: {{ getPriceCoin() }}
@@ -53,6 +59,11 @@ const { account, guestPosts, guestPostsCount, priceMatic, totalBalance } = store
           <span>{{ guestPost.message }}</span>
           <span>{{ 'Amount trans: 0.05 MATIC' }}</span>
         </div>
+      </div>
+      <div v-if="account" class="mt-5">
+        <button v-if="totalBalance !== 0" class="bg-yellow-300 rounded p-4 mt-10" @click="withdraw">
+          withdraw
+        </button>
       </div>
     </div>
   </div>
