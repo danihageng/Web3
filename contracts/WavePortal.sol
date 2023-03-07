@@ -75,7 +75,7 @@ contract WavePortal {
         console.log("Random # generated: %s", randomNumber);
         seed = randomNumber;
 
-        if (randomNumber < 5) {
+        if (randomNumber < 50) {
             console.log("winner winner chicken dinna");
             uint256 prizeAmount = .5 ether;
             require(

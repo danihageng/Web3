@@ -9,6 +9,8 @@ export const useCryptoStore = defineStore('user', () => {
   const guestPosts = ref([] as any)
   const loading = ref(false)
   const guestPostsCount = ref(0)
+  const priceMatic = ref(null)
+  const totalBalance = ref(null)
 
   async function getBalance() {
     setLoader(true)
@@ -21,7 +23,30 @@ export const useCryptoStore = defineStore('user', () => {
         const count = (await wavePortalContract.getBalance())
         const amt = ethers.utils.formatEther(count)
         console.log('count', amt)
+        localStorage.setItem('balance', amt)
+        totalBalance.value = JSON.parse(amt)
         setLoader(false)
+      }
+    }
+    catch (e) {
+      setLoader(false)
+      console.log('e', e)
+    }
+  }
+
+  async function getPriceCoin() {
+    setLoader(true)
+    try {
+      const { ethereum } = window
+      if (ethereum) {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd')
+        // https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false
+        const data = await res.json()
+        localStorage.setItem('PriceMatic', JSON.stringify(data['matic-network'].usd))
+        priceMatic.value = data['matic-network'].usd
+        console.log('Price coin:', data['matic-network'])
+        setLoader(false)
+        return data
       }
     }
     catch (e) {
@@ -59,8 +84,9 @@ export const useCryptoStore = defineStore('user', () => {
         console.log('Mined -- ', waveTxn.hash)
 
         const count = (await wavePortalContract.totalWaveCount()).toNumber()
-        console.log('count', count)
+        guestPostsCount.value = count
         messageInput = ''
+        await getBalance()
         setLoader(false)
       }
       else {
@@ -160,11 +186,37 @@ export const useCryptoStore = defineStore('user', () => {
       }
       const myAccounts = await ethereum.request({ method: 'eth_requestAccounts' })
 
-      console.log('Connected: ', myAccounts[0])
+      console.log('Connected: ', myAccounts)
       account.value = myAccounts[0]
       await getWaveCount()
       await getAllWaves()
       await getBalance()
+      await getPriceCoin()
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function withdraw() {
+    try {
+      setLoader(true)
+      const { ethereum } = window
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum)
+        const signer = provider.getSigner()
+        const wavePortalContract = new ethers.Contract(contractAddress, contractABI.abi, signer)
+
+        const balanceWithdraw = await wavePortalContract.withdraw()
+        console.log('Balance withdrawn', balanceWithdraw)
+        await getBalance()
+        await getWaveCount()
+        await getAllWaves()
+      }
+      else {
+        console.log('Ethereum object doesn\'t exist!')
+      }
+      setLoader(false)
     }
     catch (error) {
       console.log(error)
@@ -206,6 +258,9 @@ export const useCryptoStore = defineStore('user', () => {
     loading,
     wave,
     connectWallet,
+    getPriceCoin,
+    priceMatic,
+    totalBalance,
     account,
     guestPosts,
     guestPostsCount,

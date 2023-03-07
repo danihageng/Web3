@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCryptoStore } from '~/stores/crypto'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 const props = useCryptoStore()
 
 // https://github.com/vueuse/head
