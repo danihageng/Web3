@@ -11,20 +11,28 @@ const { account, guestPosts, guestPostsCount, priceMatic, totalBalance } = store
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
-    <h1 class="text-2xl m-4">
-      Crypto Guest Book
-    </h1>
-    <h1 class="text-2xl m-4">
-      Matic price: {{ priceMatic }} <i class="fas fa-dollar-sign" />
-    </h1>
-    <button v-if="!account" class="background rounded-100 p-4" @click="connectWallet">
-      Connect Wallet
-    </button>
-    <div v-if="account" class="mt-5">
-      <div class="bg-green-300 rounded-100 p-4 w-1/2">
-        <h1 class="text-2xl m-4 overflow-hidden">
-          Connected Wallet: {{ account }}
+  <div class="flex flex-col ">
+    <!-- <div class="d-flex justify-content-end">
+      <button v-if="!account" class="background rounded-100 p-4" @click="connectWallet">
+        Connect Wallet
+      </button>
+    </div> -->
+    <div class="d-flex justify-content-between">
+      <h1 class="text-2xl m-4">
+        Crypto Guest Book
+      </h1>
+      <h1 class="text-2xl m-4">
+        Matic price: {{ priceMatic }} <i class="fas fa-dollar-sign" />
+      </h1>
+      <button v-if="!account" class="background rounded-100 p-4" @click="connectWallet">
+        Connect Wallet
+      </button>
+    </div>
+
+    <div v-if="account" class="mt-1 items-center">
+      <div class="background rounded-100 p-4 ">
+        <h1 class="text-2xl m-1 overflow-hidden">
+          Wallet: {{ account }}
         </h1>
       </div>
       <input
@@ -41,24 +49,26 @@ const { account, guestPosts, guestPostsCount, priceMatic, totalBalance } = store
       </button> -->
     </div>
 
-    <div v-if="account" class="border shadow rounded-100 bg-blue-800 w-8/12 p-4 mt-10 text-white">
-      <h3 class="text-2xl">
-        Number Of Entries: {{ guestPostsCount }}
-      </h3>
-      <h3 v-if="totalBalance !== 0" class="text-2xl">
-        Total amount inverted: {{ totalBalance }} MATIC = {{ totalBalance * priceMatic }} <i class="fas fa-dollar-sign" />
-      </h3>
-      <h3 v-if="totalBalance == 0" class="text-2xl">
-        Total amount inverted: {{ totalBalance }} MATIC
-      </h3>
+    <div v-if="account" class="justify-content-around border shadow rounded-100 bg-blue-800 mx-10 background p-4 mt-10 text-white">
+      <div class="d-flex justify-content-between">
+        <h3 class="text-2xl m-4">
+          Number Of Entries: {{ guestPostsCount }}
+        </h3>
+        <h3 v-if="totalBalance !== 0" class="text-2xl m-4">
+          Total inverted: {{ totalBalance }} MATIC = {{ totalBalance * priceMatic }} <i class="fas fa-dollar-sign" />
+        </h3>
+        <h3 v-if="totalBalance == 0" class="text-2xl m-4">
+          Total inverted: {{ totalBalance }} MATIC
+        </h3>
+      </div>
       <!-- <h3 class="text-2xl">
         Data: {{ getPriceCoin() }}
       </h3> -->
-      <div v-for="(guestPost, idx) in guestPosts" :key="idx" class="flex flex-col  m-auto " :class="{'mt-4': idx > 1}">
+      <div v-for="(guestPost, idx) in guestPosts" :key="idx" class="flex flex-col  m-auto " :class="{'mt-4': idx > 0}">
         <div v-if="guestPost.message" class="flex justify-between w-full">
           <span class="font-semibold">{{ guestPost.timestamp }}</span>
           <span>{{ guestPost.message }}</span>
-          <span>{{ 'Amount trans: 0.05 MATIC' }}</span>
+          <span>{{ 'Value trans: 0.05 MATIC' }}</span>
         </div>
       </div>
       <div v-if="account" class="mt-5">
