@@ -12,6 +12,7 @@ module.exports = {
     },
     mumbai: {
       url: 'https://polygon-mumbai.g.alchemy.com/v2/-ciepLPh-TWCsNBPb3LaTwKxyddsECu5',
+      // url: 'https://polygon-mainnet.g.alchemy.com/v2/FM93UrwS_VtahJTrBz5W4jzJRRG90i4_',
       accounts: [`0x${process.env.PRIVATE_KEY}`],
     },
   },

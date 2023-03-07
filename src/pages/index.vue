@@ -7,18 +7,19 @@ const messageInput = ref(null as any)
 const cryptoStore = useCryptoStore()
 const { wave, connectWallet, withdraw } = useCryptoStore()
 const { account, guestPosts, guestPostsCount, priceMatic, totalBalance } = storeToRefs(cryptoStore)
+
 </script>
 
 <template>
   <div class="flex flex-col items-center">
     <h1 class="text-2xl m-4">
-      Dani Crypto Project
+      Crypto Guest Book
     </h1>
     <h1 class="text-2xl m-4">
       Matic price: {{ priceMatic }} <i class="fas fa-dollar-sign" />
     </h1>
-    <button v-if="!account" class="bg-green-300 rounded-100 p-4" @click="connectWallet">
-      Connect web3 to cripto Wallet
+    <button v-if="!account" class="background rounded-100 p-4" @click="connectWallet">
+      Connect Wallet
     </button>
     <div v-if="account" class="mt-5">
       <div class="bg-green-300 rounded-100 p-4 w-1/2">
@@ -81,5 +82,9 @@ meta:
 }
 .linear_gradient {
   background: linear-gradient(-45deg, #ffff, #de6161);
+ }
+.background {
+  background: linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%);
+  color:white;
 }
 </style>
